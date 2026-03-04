@@ -2,8 +2,21 @@ import { useUIStore } from "../store/uiStore";
 import { useCalls } from "../hooks/useCalls";
 
 export function CallDetails() {
-  const call = useUIStore((s) => s.selectedCall);
-  const { updateStatus } = useCalls();
+  const selectedCallId = useUIStore((s) => s.selectedCallId);
+  const { callsQuery, updateStatus } = useCalls();
+  const call =
+    callsQuery.data?.find((currentCall) => currentCall.id === selectedCallId) ??
+    null;
+
+  if (callsQuery.isPending)
+    return <div className="flex items-center justify-center">Loading...</div>;
+
+  if (callsQuery.isError)
+    return (
+      <div className="flex items-center justify-center">
+        {callsQuery.error.message}
+      </div>
+    );
 
   if (!call)
     return (

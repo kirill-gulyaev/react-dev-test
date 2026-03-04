@@ -2,12 +2,12 @@ import { create } from "zustand";
 import type { Call } from "../types";
 
 type UIState = {
-  selectedCall: Call | null;
-  setSelectedCall: (call: Call) => void;
+  selectedCallId: Call["id"] | null;
+  setSelectedCallId: (id: Call["id"]) => void;
 };
 
 export const useUIStore = create<UIState>((set) => ({
-  selectedCall: null,
+  selectedCallId: null,
 
-  setSelectedCall: (call) => set({ selectedCall: call }),
+  setSelectedCallId: (id) => set({ selectedCallId: id }),
 }));
