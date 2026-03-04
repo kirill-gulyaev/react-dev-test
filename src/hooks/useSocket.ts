@@ -15,5 +15,5 @@ export function useSocket() {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [queryClient]);
 }

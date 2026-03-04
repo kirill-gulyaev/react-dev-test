@@ -2,7 +2,7 @@ import type { Call } from "../types";
 
 type Listener = (update: Partial<Call>) => void;
 
-let listeners: Listener[] = [];
+const listeners: Listener[] = [];
 
 export function connectSocket() {
   setInterval(() => {

@@ -1,6 +1,6 @@
-import type { Call } from "../types";
+import type { Call, UpdateCallStatusInput } from "../types";
 
-let calls: Call[] = Array.from({ length: 1000 }).map((_, i) => ({
+const calls: Call[] = Array.from({ length: 1000 }).map((_, i) => ({
   id: String(i),
   phone: `+1-555-${1000 + i}`,
   status: "incoming",
@@ -16,10 +16,10 @@ export function fetchCalls(): Promise<Call[]> {
   });
 }
 
-export function updateCallStatus(
-  id: string,
-  status: Call["status"],
-): Promise<Call> {
+export function updateCallStatus({
+  id,
+  status,
+}: UpdateCallStatusInput): Promise<Call> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (Math.random() < 0.3) {
