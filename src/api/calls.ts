@@ -27,7 +27,12 @@ export function updateCallStatus({
         return;
       }
 
-      const call = calls.find((c) => c.id === id)!;
+      const call = calls.find((c) => c.id === id);
+      if (!call) {
+        reject(new Error("Call not found"));
+        return;
+      }
+
       call.status = status;
       call.updatedAt = Date.now();
 

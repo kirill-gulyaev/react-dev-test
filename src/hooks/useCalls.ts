@@ -2,16 +2,20 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchCalls, updateCallStatus } from "../api/calls";
 import type { Call, UpdateCallStatusInput } from "../types";
 
+type UpdateStatusContext = {
+  prev: Call[] | undefined;
+};
+
 export function useCalls() {
   const queryClient = useQueryClient();
 
-  const callsQuery = useQuery({
+  const callsQuery = useQuery<Call[], Error>({
     queryKey: ["calls"],
     queryFn: fetchCalls,
     refetchOnWindowFocus: true,
   });
 
-  const updateStatus = useMutation({
+  const updateStatus = useMutation<Call, Error, UpdateCallStatusInput, UpdateStatusContext>({
     mutationFn: updateCallStatus,
 
     onMutate: async ({ id, status }: UpdateCallStatusInput) => {
@@ -29,7 +33,14 @@ export function useCalls() {
     onError: (_err, _vars, ctx) => {
       queryClient.setQueryData(["calls"], ctx?.prev);
     },
+
+    onSettled: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["calls"] });
+    },
   });
 
-  return { callsQuery, updateStatus };
+  return {
+    callsQuery,
+    updateStatus,
+  };
 }

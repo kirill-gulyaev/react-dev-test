@@ -10,6 +10,13 @@ export function CallDetails() {
       <div className="flex items-center justify-center">Select a call</div>
     );
 
+  if (updateStatus.isError)
+    return (
+      <div className="flex items-center justify-center">
+        {updateStatus.error.message}
+      </div>
+    );
+
   return (
     <div className="flex items-center justify-center">
       <div>
@@ -17,9 +24,11 @@ export function CallDetails() {
         <p>Status: {call.status}</p>
 
         <button
+          type="button"
+          disabled={updateStatus.isPending}
           onClick={() => updateStatus.mutate({ id: call.id, status: "hold" })}
         >
-          Hold
+          {updateStatus.isPending ? "Updating..." : "Hold"}
         </button>
       </div>
     </div>
